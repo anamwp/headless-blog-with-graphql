@@ -12,10 +12,8 @@ export default function Category() {
 
 	useEffect(() => {
 		fetchCategories();
-	});
-
-	console.log('siteCategories', siteCategories);
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const fetchCategories = async () => {
 		if (loading) return;
@@ -33,6 +31,8 @@ export default function Category() {
 		  setLoading(false);
 		}
 	}
+
+	console.log('siteCategories', siteCategories);
 
 	return (
 		<div>

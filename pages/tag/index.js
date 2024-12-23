@@ -12,11 +12,9 @@ export default function Tag() {
 
 	useEffect(() => {
 		fetchTags();
-	});
-
-	// console.log('siteTags', siteTags);
-
-
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	
 	const fetchTags = async () => {
 		if (loading) return;
 		setLoading(true);
@@ -33,6 +31,10 @@ export default function Tag() {
 		  setLoading(false);
 		}
 	}
+
+	// console.log('siteTags', siteTags);
+
+
 
 	return (
 		<div>

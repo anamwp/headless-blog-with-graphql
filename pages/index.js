@@ -1,6 +1,6 @@
 import { getPosts } from '@/lib/api';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 
 export async function getStaticProps() {
   const posts = await getPosts(1, 10);
@@ -24,30 +24,30 @@ const Home = () => {
   const [loading, setLoading] = useState(false); // Loading state
   const [hasMore, setHasMore] = useState(true); // If more posts exist
 
-  useEffect(() => {
-    fetchPosts(); // Load initial posts
-    // setSitePosts((prevPosts) => [...prevPosts, ...response.data]);
-  });
-  
   const fetchPosts = async () => {
     if (loading) return;
     setLoading(true);
     try {
-      console.log('page', page);
-      const response = await getPosts(page, 50);
+      const response = await getPosts(page, process.env.NEXT_PUBLIC_POSTS_PER_PAGE);
       console.log('response.data', response);
       setSitePosts((prevPosts) => [...prevPosts, ...response]);
       setPage((prevPage) => prevPage + 1);
       if( response ){
-        if (response.length < 50) setHasMore(false); // If less than 5 posts, no more to load
+        if (response.length < process.env.NEXT_PUBLIC_POSTS_PER_PAGE) setHasMore(false);
       }
-      // console.log('sitePosts', sitePosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    fetchPosts(); // Load initial posts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+  
   console.log('sitePosts', sitePosts);
   // console.log('get static props', sitePosts);
   // sitePosts.map((post) => {
