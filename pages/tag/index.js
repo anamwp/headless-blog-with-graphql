@@ -14,7 +14,7 @@ export default function Tag() {
 		fetchTags();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	
+
 	const fetchTags = async () => {
 		if (loading) return;
 		setLoading(true);
@@ -32,7 +32,7 @@ export default function Tag() {
 		}
 	}
 
-	// console.log('siteTags', siteTags);
+	console.log('siteTags', siteTags.length);
 
 
 
@@ -40,9 +40,10 @@ export default function Tag() {
 		<div>
 			<h1>Tags</h1>
 			<p>Tag page content</p>
+			<p>{ siteTags.length < 1 ? 'No tags found' : '' }</p>
 			{
 				loading ? 'Loading tags...' : (
-					<ul>
+					siteTags && <ul>
 						{siteTags.map((tag) => (
 							<li key={tag.id}>
 								<Link href={`/tag/${tag.slug}`}>
