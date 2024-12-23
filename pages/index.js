@@ -29,12 +29,21 @@ const Home = () => {
     setLoading(true);
     try {
       const response = await getPosts(page, process.env.NEXT_PUBLIC_POSTS_PER_PAGE);
-      console.log('response.data', response);
-      setSitePosts((prevPosts) => [...prevPosts, ...response]);
+      console.log('response', response);
+      const postData = response.data;
+      const totalPosts = response.totalPosts;
+
+      setSitePosts((prevPosts) => [...prevPosts, ...postData]);
       setPage((prevPage) => prevPage + 1);
-      if( response ){
-        if (response.length < process.env.NEXT_PUBLIC_POSTS_PER_PAGE) setHasMore(false);
+      
+      if( postData ){
+        if (postData.length < process.env.NEXT_PUBLIC_POSTS_PER_PAGE){
+          setHasMore(false);
+        }else if( totalPosts == process.env.NEXT_PUBLIC_POSTS_PER_PAGE ){
+          setHasMore(false)
+        }
       }
+
     } catch (error) {
       console.error('Error fetching posts:', error);
     } finally {
