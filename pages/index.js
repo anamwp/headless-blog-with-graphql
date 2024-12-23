@@ -11,7 +11,7 @@ export async function getStaticProps() {
 const RenderData = ( posts ) => {
   return posts.data.map((post) => (
     <li key={post.id}>
-      <Link href={`/posts/${post.slug}`}> {post.id} -  {post.title.rendered}</Link>
+      <Link href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
     </li>
   ));
 }
