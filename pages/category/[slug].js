@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://anamstarter.local/wp-json/wp/v2';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getStaticPaths() {
   // Fetch all categories

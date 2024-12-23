@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Link from 'next/link';
 
-const API_URL = 'http://anamstarter.local/wp-json/wp/v2';
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getStaticPaths() {
   console.log('getStaticPaths');
