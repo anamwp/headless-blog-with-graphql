@@ -1,6 +1,6 @@
 import { getPosts } from '@/lib/api';
 import Link from 'next/link';
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export async function getStaticProps() {
   const posts = await getPosts(1, 10);
