@@ -12,7 +12,7 @@ export default function Category() {
 
 	useEffect(() => {
 		fetchCategories();
-	}, []);
+	});
 
 	console.log('siteCategories', siteCategories);
 

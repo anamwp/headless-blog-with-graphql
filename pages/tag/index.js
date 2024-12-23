@@ -12,7 +12,7 @@ export default function Tag() {
 
 	useEffect(() => {
 		fetchTags();
-	}, []);
+	});
 
 	// console.log('siteTags', siteTags);
 

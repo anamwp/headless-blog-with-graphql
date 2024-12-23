@@ -17,7 +17,7 @@ const RenderData = ( posts ) => {
 }
 
 
-const Home = ({ posts }) => {
+const Home = () => {
 
   const [sitePosts, setSitePosts] = useState([]); // Store fetched posts
   const [page, setPage] = useState(1); // Current page
@@ -27,7 +27,7 @@ const Home = ({ posts }) => {
   useEffect(() => {
     fetchPosts(); // Load initial posts
     // setSitePosts((prevPosts) => [...prevPosts, ...response.data]);
-  }, []);
+  });
   
   const fetchPosts = async () => {
     if (loading) return;
