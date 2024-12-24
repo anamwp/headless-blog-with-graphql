@@ -10,8 +10,8 @@ export async function getStaticProps() {
 
 const RenderData = ( posts ) => {
   return posts.data.map((post) => (
-    <li key={post.id}>
-      <Link href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
+    <li key={post.id} className='mb-2'>
+      <Link className='text-slate-600 text-base hover:text-slate-950' href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
     </li>
   ));
 }
@@ -64,9 +64,10 @@ const Home = () => {
   // })
   return (
     <div>
-      <h1>Blog Posts</h1>
-      <p>Posts will be rendered here</p>
-      <RenderData data={sitePosts} />
+      <h1 className='text-xl font-medium mb-5'>Blog Posts</h1>
+      <ul className=''>
+        <RenderData data={sitePosts} />
+      </ul>
       {/* <ul>
         {sitePosts.map((post) => (
           <li key={post.id}>
@@ -75,9 +76,11 @@ const Home = () => {
         ))}
       </ul> */}
       {hasMore && (
-        <button onClick={fetchPosts} disabled={loading}>
-          {loading ? 'Loading...' : 'Show more posts'}
-        </button>
+        <div className='mt-10'>
+          <button className="px-5 py-2 border-2 border-slate-500 rounded-sm hover:bg-black hover:text-white hover:border-black transition-all" onClick={fetchPosts} disabled={loading}>
+            {loading ? 'Loading...' : 'Show more posts'}
+          </button>
+        </div>
       )}
       {!hasMore && <p>No more posts to load.</p>}
     </div>

@@ -4,23 +4,30 @@ import Link from 'next/link';
 const Layout = ({ children }) => {
   return (
     <>
-      <header style={styles.header}>
-        <nav>
+      <header className='site-header py-5 border-b mb-10'>
+        <nav className='container mx-auto flex flex-wrap justify-between items-center'>
+          <h1 className='text-3xl font-bold text-slate-700'>
+            <Link href="/">Headless Blog</Link>
+          </h1>
           <ul style={styles.navList}>
-            <li><Link href="/">Home</Link></li>
-            <li><Link href="/about">About</Link></li>
-            <li><Link href="/category">Category</Link></li>
-            <li><Link href="/tag">Tag</Link></li>
+            <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/">Home</Link></li>
+            <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/about">About</Link></li>
+            <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/category">Category</Link></li>
+            <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/tag">Tag</Link></li>
           </ul>
         </nav>
       </header>
 
-      <main style={styles.main}>
-        {children}
+      <main className='site-content'>
+        <div className='container max-w-screen-md mx-auto'>
+          {children}
+        </div>
       </main>
 
-      <footer style={styles.footer}>
-        <p>&copy; {new Date().getFullYear()} My WordPress Blog</p>
+      <footer className='site-footer border-t py-5 mt-10'>
+        <div className="container mx-auto">
+          <p className="text-center">&copy; {new Date().getFullYear()} My WordPress Blog</p>
+        </div>
       </footer>
     </>
   );

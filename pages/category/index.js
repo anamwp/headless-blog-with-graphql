@@ -36,15 +36,14 @@ export default function Category() {
 
 	return (
 		<div>
-			<h1>Category</h1>
-			<p>Category page content</p>
+			<h2 className='text-2xl my-5 font-medium'>Category</h2>
 			{
 				loading ? 'Loading categories...' : (
 					<ul>
 						{siteCategories.map((category) => (
 							
 							<li key={category.id}>
-								<Link href={`/category/${category.slug}`}>
+								<Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/category/${category.slug}`}>
 									{category.name}
 								</Link>
 							</li>

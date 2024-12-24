@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Link from 'next/link';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -53,11 +54,11 @@ export async function getStaticProps({ params }) {
 const TagPage = ({ tag, posts }) => {
   return (
     <div>
-      <h1>Tag: {tag.name}</h1>
+      <h2 className='text-2xl my-5 font-medium'>Tag: {tag.name}</h2>
       <ul>
         {posts.map((post) => (
-          <li key={post.id}>
-            <a href={`/posts/${post.slug}`}>{post.title.rendered}</a>
+          <li key={post.id} className='mb-1'>
+            <Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
           </li>
         ))}
       </ul>

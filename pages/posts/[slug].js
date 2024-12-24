@@ -73,38 +73,38 @@ export async function getStaticProps(context) {
 }
 
 const PostPage = ({ post, relatedPosts, categories, tags }) => (
-  <div>
-    <Link href="/">Back</Link>
-    <h1>{post.title.rendered}</h1>
-    <div dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
+  <div className="container max-w-screen-md mx-auto my-10 inline-block">
+    <Link className='inline-block px-5 py-2 mb-5 border-2 border-slate-500 rounded-sm hover:bg-black hover:text-white hover:border-black transition-all' href="/">Back</Link>
+    <h2 className='text-2xl my-5 font-medium'>{post.title.rendered}</h2>
+    <div className='flex flex-col gap-5' dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
 
-    <h2>Categories</h2>
-    <ul>
+    <h2 className='text-2xl my-5 font-medium mt-10'>Categories</h2>
+    <ul className='flex flex-wrap gap-2'>
       {categories.map((category) => (
         <li key={category.id}>
-          <Link href={`/category/${category.slug}`}>
+          <Link className='bg-slate-200 px-3 py-1 rounded-md hover:bg-slate-300 transition-all capitalize text-sm' href={`/category/${category.slug}`}>
             {category.name}
           </Link>
         </li>
       ))}
     </ul>
 
-    <h2>Tags</h2>
-    <ul>
+    <h2 className='text-2xl my-5 font-medium mt-10'>Tags</h2>
+    <ul className='flex flex-wrap gap-2'>
       {tags.map((tag) => (
         <li key={tag.id}>
-          <Link href={`/tag/${tag.slug}`}>
+          <Link className='bg-slate-200 px-3 py-1 rounded-md hover:bg-slate-300 transition-all capitalize text-sm' href={`/tag/${tag.slug}`}>
             {tag.name}
           </Link>
         </li>
       ))}
     </ul>
 
-    <h2>Related Posts</h2>
+    <h2 className='text-2xl my-5 font-medium mt-10'>Related Posts</h2>
     <ul>
       {relatedPosts.map((relatedPost) => (
-        <li key={relatedPost.id}>
-          <a href={`/posts/${relatedPost.slug}`}>{relatedPost.title.rendered}</a>
+        <li key={relatedPost.id} className='mb-1'>
+          <Link className='text-slate-600 text-base hover:text-slate-950' href={`/posts/${relatedPost.slug}`}>{relatedPost.title.rendered}</Link>
         </li>
       ))}
     </ul>

@@ -1,17 +1,3 @@
-body {
-	margin: 0;
-	font-family: Arial, sans-serif;
-	line-height: 1.6;
-  }
-  
-  a {
-	color: #fff;
-	text-decoration: none;
-  }
-  
-  a:hover {
-	text-decoration: underline;
-  }
-  main a{
-	color: #444;
-  }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

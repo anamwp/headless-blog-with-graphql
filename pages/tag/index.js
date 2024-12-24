@@ -38,15 +38,14 @@ export default function Tag() {
 
 	return (
 		<div>
-			<h1>Tags</h1>
-			<p>Tag page content</p>
+			<h2 className='text-2xl my-5 font-medium'>Tags</h2>
 			<p>{ siteTags.length < 1 ? 'No tags found' : '' }</p>
 			{
 				loading ? 'Loading tags...' : (
 					siteTags && <ul>
 						{siteTags.map((tag) => (
-							<li key={tag.id}>
-								<Link href={`/tag/${tag.slug}`}>
+							<li className='mb-1' key={tag.id}>
+								<Link className='capitalize text-slate-600 text-base hover:text-slate-950' href={`/tag/${tag.slug}`}>
 									{tag.name}
 								</Link>
 							</li>
