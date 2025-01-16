@@ -19,7 +19,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: 'https', // Use 'https' if your WordPress is served over HTTPS
-        hostname: 'anamstarter.local', // Replace with your WordPress domain
+        hostname: process.env.SITE_DOMAIN, // Replace with your WordPress domain
         port: '', // Specify the port if your WordPress runs on a non-standard port
         pathname: '/wp-content/uploads/**', // Match the path for uploaded media
       },
