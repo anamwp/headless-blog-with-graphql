@@ -13,7 +13,7 @@ const RenderData = ( posts ) => {
   // console.log('featured image', featuredImage);
   return posts.data.map((post) => {
     const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
-    console.log('featured image', featuredImage);
+    // console.log('featured image', featuredImage);
     return (
       <li key={post.id} className='mb-2'>
       <Link className='text-slate-600 text-base hover:text-slate-950 overflow-hidden inline-block rounded-md' href={`/posts/${post.slug}`}>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -36,7 +37,7 @@ export async function getStaticProps({ params }) {
 
     // Fetch posts in this category
     const postsResponse = await axios.get(`${API_URL}/posts`, {
-      params: { categories: category.id, per_page: 10 },
+      params: { categories: category.id, per_page: process.env.NEXT_PUBLIC_POSTS_PER_PAGE, _embed: true },
     });
 
     return {
@@ -55,12 +56,20 @@ const CategoryPage = ({ category, posts }) => {
   return (
     <div>
       <h2 className='text-2xl my-5 font-medium'>Category: {category.name}</h2>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id} className='mb-1'>
-            <Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
-          </li>
-        ))}
+      <ul className='grid grid-cols-3 gap-7'>
+        {posts.map((post) => {
+          const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
+          return (
+            <li key={post.id} className='mb-1'>
+              <Link className='text-slate-600 text-base hover:text-slate-950 overflow-hidden inline-block rounded-md' href={`/posts/${post.slug}`}>
+                {
+                  featuredImage && <Image width={900} height={600} src={featuredImage} alt={post.title.rendered} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
+                }
+              </Link>
+              <Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
+            </li>
+          )
+        })}
       </ul>
     </div>
   );

@@ -37,7 +37,7 @@ export default function Tag() {
 
 
 	return (
-		<div>
+		<div className='container max-w-screen-md mx-auto my-10 inline-block'>
 			<h2 className='text-2xl my-5 font-medium'>Tags</h2>
 			<p>{ siteTags.length < 1 ? 'No tags found' : '' }</p>
 			{

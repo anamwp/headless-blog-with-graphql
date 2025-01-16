@@ -35,7 +35,7 @@ export default function Category() {
 	console.log('siteCategories', siteCategories);
 
 	return (
-		<div>
+		<div className='container max-w-screen-md mx-auto my-10 inline-block'>
 			<h2 className='text-2xl my-5 font-medium'>Category</h2>
 			{
 				loading ? 'Loading categories...' : (
