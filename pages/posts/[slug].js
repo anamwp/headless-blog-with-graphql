@@ -82,11 +82,17 @@ const PostPage = ({ post, relatedPosts, categories, tags }) => {
   return (
     <div className="container max-w-screen-md mx-auto my-10 inline-block">
       <Link className='inline-block px-5 py-2 mb-5 border-2 border-slate-500 rounded-sm hover:bg-black hover:text-white hover:border-black transition-all' href="/">Back</Link>
-      <h2 className='text-2xl my-5 font-medium'>{post.title.rendered}</h2>
+      <h2 className='text-2xl my-5 font-medium mb-2'>{post.title.rendered}</h2>
+      <div className="meta flex align-middle justify-between">
+          {/* author */}
+          <span className='text-sm text-slate-600'>By {post._embedded.author[0].name}</span>
+          {/* date */}
+          <span className='text-sm text-slate-600'>Published on {new Date(post.date).toDateString()}</span>
+      </div>
       {/* <p className='text-sm text-slate-600'>Published on {new Date(post.date).toDateString()}</p> */}
       {/* show featured image */}
       {
-        featuredImage && <Image width={900} height={600} src={featuredImage} alt={post.title.rendered} className='w-full h-full mb-5 object-cover rounded-md' />
+        featuredImage && <Image width={900} height={600} src={featuredImage} alt={post.title.rendered} className='mt-7 w-full h-auto mb-5 object-cover rounded-md' />
       }
       <div className='flex flex-col gap-5' dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
   
