@@ -1,4 +1,5 @@
 import { getPosts } from '@/lib/api';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
@@ -9,11 +10,21 @@ export async function getStaticProps() {
 }
 
 const RenderData = ( posts ) => {
-  return posts.data.map((post) => (
-    <li key={post.id} className='mb-2'>
-      <Link className='text-slate-600 text-base hover:text-slate-950' href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
+  // console.log('featured image', featuredImage);
+  return posts.data.map((post) => {
+    const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
+    console.log('featured image', featuredImage);
+    return (
+      <li key={post.id} className='mb-2'>
+      <Link className='text-slate-600 text-base hover:text-slate-950 overflow-hidden inline-block rounded-md' href={`/posts/${post.slug}`}>
+        {
+          featuredImage && <Image width={900} height={600} src={featuredImage} alt={post.title.rendered} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
+        }
+      </Link>
+      <Link className='text-lg mt-3 inline-block leading-tight text-slate-600 text-base hover:text-slate-950' href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
     </li>
-  ));
+    )
+  });
 }
 
 
@@ -65,7 +76,7 @@ const Home = () => {
   return (
     <div>
       <h1 className='text-xl font-medium mb-5'>Blog Posts</h1>
-      <ul className=''>
+      <ul className='grid grid-cols-3 gap-7'>
         <RenderData data={sitePosts} />
       </ul>
       {/* <ul>

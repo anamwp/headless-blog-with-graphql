@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
       </header>
 
       <main className='site-content'>
-        <div className='container max-w-screen-md mx-auto'>
+        <div className='container max-w-screen-xl mx-auto'>
           {children}
         </div>
       </main>
