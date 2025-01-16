@@ -5,7 +5,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <header className='site-header py-5 border-b mb-10'>
-        <nav className='container mx-auto flex flex-wrap justify-between items-center'>
+        <nav className='container max-w-screen-xl mx-auto flex flex-wrap justify-between items-center sm:px-5 px-5'>
           <h1 className='text-3xl font-bold text-slate-700'>
             <Link href="/">Headless Blog</Link>
           </h1>
@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
       </header>
 
       <main className='site-content'>
-        <div className='container max-w-screen-xl mx-auto flex flex-direction-col justify-center'>
+        <div className='container max-w-screen-xl mx-auto flex flex-direction-col justify-center sm:px-5 px-5'>
           {children}
         </div>
       </main>

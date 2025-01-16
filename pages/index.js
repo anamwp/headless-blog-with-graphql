@@ -76,7 +76,7 @@ const Home = () => {
   return (
     <div>
       <h1 className='text-xl font-medium mb-5'>Blog Posts</h1>
-      <ul className='grid grid-cols-3 gap-7'>
+      <ul className='grid grid-cols-1 gap-7 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '>
         <RenderData data={sitePosts} />
       </ul>
       {/* <ul>

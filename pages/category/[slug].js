@@ -56,7 +56,7 @@ const CategoryPage = ({ category, posts }) => {
   return (
     <div>
       <h2 className='text-2xl my-5 font-medium'>Category: {category.name}</h2>
-      <ul className='grid grid-cols-3 gap-7'>
+      <ul className='grid grid-cols-1 gap-7 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
         {posts.map((post) => {
           const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
           return (
@@ -66,7 +66,7 @@ const CategoryPage = ({ category, posts }) => {
                   featuredImage && <Image width={900} height={600} src={featuredImage} alt={post.title.rendered} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
                 }
               </Link>
-              <Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
+              <Link className="inline-block capitalize text-slate-600 text-base hover:text-slate-950" href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
             </li>
           )
         })}
