@@ -117,23 +117,26 @@ const PostPage = ({ post, relatedPosts, categories, tags }) => {
           </li>
         ))}
       </ul>
-  
-      <h2 className='text-2xl my-5 font-medium mt-10'>Related Posts</h2>
-      <ul className='grid grid-cols-3 gap-5'>
-        {relatedPosts.map((relatedPost) => {
-          const relatedFeaturedImage = relatedPost._embedded['wp:featuredmedia'] ? relatedPost._embedded['wp:featuredmedia'][0].source_url : null;
-          return (
-            <li key={relatedPost.id} className='mb-1'>
-              <Link className='overflow-hidden inline-block rounded-md' href={`/posts/${relatedPost.slug}`}>
-              {
-                relatedFeaturedImage && <Image width={900} height={600} src={relatedFeaturedImage} alt={relatedPost.title.rendered} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
-              }
-              </Link>
-              <Link className='text-lg mt-3 inline-block leading-tight text-slate-600 text-base hover:text-slate-950' href={`/posts/${relatedPost.slug}`}>{relatedPost.title.rendered}</Link>
-            </li>
-          )
-        })}
-      </ul>
+      { relatedPosts.length > 0 &&
+      <div className='mt-10'>
+        <h2 className='text-2xl my-5 font-medium'>Related Posts</h2>
+        <ul className='grid grid-cols-3 gap-5'>
+          {relatedPosts.map((relatedPost) => {
+            const relatedFeaturedImage = relatedPost._embedded['wp:featuredmedia'] ? relatedPost._embedded['wp:featuredmedia'][0].source_url : null;
+            return (
+              <li key={relatedPost.id} className='mb-1'>
+                <Link className='overflow-hidden inline-block rounded-md' href={`/posts/${relatedPost.slug}`}>
+                {
+                  relatedFeaturedImage && <Image width={900} height={600} src={relatedFeaturedImage} alt={relatedPost.title.rendered} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
+                }
+                </Link>
+                <Link className='text-lg mt-3 inline-block leading-tight text-slate-600 text-base hover:text-slate-950' href={`/posts/${relatedPost.slug}`}>{relatedPost.title.rendered}</Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      }
   
     </div>
   );
