@@ -5,28 +5,35 @@ import Link from 'next/link';
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getStaticPaths() {
-  console.log('getStaticPaths');
-  // const response = await axios.get(`${API_URL}/posts`, {
-  //   params: { per_page: 10 }, // Adjust as needed for large sites
-  // });
-
-  // // response.data.map( post => {
-  // //   // console.log('post', post.title.rendered);
-  // // } )
-
-  // const paths = response.data.map((post) => ({
-  //   params: { slug: post.slug },
-  // }));
-  // console.log('paths', paths);
-
-  return { paths: [], fallback: 'blocking' }; // Generate pages on-demand if not pre-built
-  // return { paths, fallback: 'true' }; // Generate pages on-demand if not pre-built
+  /**
+   * Fetch all posts to generate static pages
+   */
+  const response = await axios.get(`${API_URL}/posts`, {
+    params: { per_page: 10 }, // Adjust as needed for large sites
+  });
+  /**
+   * Generate paths for each post
+   */
+  const paths = response.data.map((post) => ({
+    params: { 
+      slug: post.slug,
+      id: post.id.toString()
+    },
+  }));
+  debugger;
+  /**
+   * Return the paths, and set fallback to false to return a 404 if the post doesn't exist
+   */
+  return { paths, fallback: 'blocking' }; // Generate pages on-demand if not pre-built
 }
 
-export async function getStaticProps(context) {
-  console.log('static context', context);
-  const { params } = context;
-  console.log('params of static props', params);
+export async function getStaticProps({params}) {
+
+  console.log('static params', params);
+  // console.log('static context', context);
+  const { slug } = params;
+  // console.log('params of static props', id);
+  // console.log('ID of single post', id);
 
   const siteSettings = {
     siteTitle: 'My Awesome Blog',
@@ -34,13 +41,14 @@ export async function getStaticProps(context) {
   };
 
   const response = await axios.get(`${API_URL}/posts`, {
-    params: { slug: params.slug, _embed: true},
+    params: { slug: slug, _embed: true},
   });
 
   if (response.data.length === 0) {
     return { notFound: true }; // 404 if the post doesn't exist
   }
   const post = response.data[0];
+  const id = post.id;
 
   // const categoriesResponse = await axios.get(`${API_URL}/categories`);
   const relatedPostsResponse = await axios.get(`${API_URL}/posts`, {
@@ -62,6 +70,13 @@ export async function getStaticProps(context) {
 
   // console.log('post', post);
 
+    // Fetch comments for the post
+    const commentsResponse = await axios.get(`${API_URL}/comments`, {
+      params: { post: id }, // Fetch comments by post ID
+    });
+    const comments = commentsResponse.data;
+    // console.log('comments', comments);
+
   return {
     props: {
       post: post,
@@ -69,16 +84,59 @@ export async function getStaticProps(context) {
       siteSettings: siteSettings,
       categories: categoriesResponse.data,
       tags: tagsResponse.data,
+      comments: comments,
     },
     revalidate: 10, // Revalidate every 10 seconds
   };
 }
 
-const PostPage = ({ post, relatedPosts, categories, tags }) => {
+const PostPage = ({ post, relatedPosts, categories, tags, comments }) => {
   // console.log('postsssss', post._embedded);
   // console.log('relatedPosts', relatedPosts);
   const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
   // const relatedFeaturedImage = relatedPosts._embedded['wp:featuredmedia'] ? relatedPosts._embedded['wp:featuredmedia'][0].source_url : null;
+  // console.log('comments', comments);
+
+  const Comment = ({ comment, comments }) => {
+    // filter rootCommnets and find out children comments
+    const childComments = comments.filter(c => c.parent === comment.id);
+    // console.log( 'singleComment', comment );
+    // console.log( 'childComments', childComments );
+  
+    return (
+      <div style={{ marginLeft: comment.parent ? '20px' : '0px', border: '1px solid #ddd', padding: '10px', marginBottom: '10px' }}>
+        <div>
+          <strong>{comment.author_name}</strong>: 
+          <div dangerouslySetInnerHTML={{__html: comment.content.rendered}} />
+        </div>
+        {childComments.length > 0 && (
+          <div>
+            {childComments.map(childComment => (
+              <Comment key={childComment.id} comment={childComment} comments={comments} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const Comments = ({ comments }) => {
+    // Find out parent comments
+    const rootComments = comments.filter(comment => comment.parent === 0);
+    // console.log( 'rootComments', rootComments );
+  
+    return (
+      <div>
+        <h2>Comments</h2>
+        {/* Loop through parent comment and show accordingly */}
+        {rootComments.map(comment => (
+          <Comment key={comment.id} comment={comment} comments={comments} />
+        ))}
+      </div>
+    );
+  };
+
+
   return (
     <div className="container max-w-screen-md mx-auto my-10 inline-block">
       <Link className='inline-block px-5 py-2 mb-5 border-2 border-slate-500 rounded-sm hover:bg-black hover:text-white hover:border-black transition-all' href="/">Back</Link>
@@ -117,6 +175,9 @@ const PostPage = ({ post, relatedPosts, categories, tags }) => {
           </li>
         ))}
       </ul>
+      <div>
+        <Comments comments={comments} />
+      </div>
       { relatedPosts.length > 0 &&
       <div className='mt-10'>
         <h2 className='text-2xl my-5 font-medium'>Related Posts</h2>
