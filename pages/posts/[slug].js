@@ -152,11 +152,13 @@ const PostPage = ({ post, relatedPosts, categories, tags, comments }) => {
 		{/* Comments */}
 		<div>
 			{/* Render Comment Form */}
-            <span className="comment-submit-status"></span>
 			<CommentsView comments={comments} addReply={addReply} />
             <div id="comment-form-wrapper">
-                <h2 className='text-2xl my-5 font-medium'>Leave a Comment</h2>
-                <div><span className="reply-to-comment-message"></span></div>
+                <h2 className='text-2xl my-5 font-medium mt-10'>Leave a Comment</h2>
+                <div>
+                    <span className="comment-submit-status"></span>
+                    <span className="reply-to-comment-message"></span>
+                </div>
 			    <CommentForm postId={post.id} parentId={parentId} />
             </div>
 		</div>

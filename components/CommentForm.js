@@ -6,8 +6,6 @@ const CommentForm = ({ postId, parentId = 0 }) => {
 	const [authorName, setAuthorName] = useState('');
 	const [authorEmail, setAuthorEmail] = useState('');
 	const [content, setContent] = useState('');
-	console.log('postId', postId);
-	console.log('parentId', parentId);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -26,7 +24,9 @@ const CommentForm = ({ postId, parentId = 0 }) => {
 				setAuthorEmail('');
 				setContent('');
 				// add message to user
-				document.querySelector('.comment-submit-status').innerHTML = 'Comment submitted successfully. Please wait for approval.';
+				const commentSubmitStatusDom = document.querySelector('.comment-submit-status');
+				commentSubmitStatusDom.classList.add('bg-green-200', 'flex', 'gap-3', 'p-5', 'inline-block', 'w-full', 'rounded', 'mb-5');
+				commentSubmitStatusDom.innerHTML = 'Comment submitted successfully. Please wait for approval.';
 			}
 			// Optionally refresh comments
 		} catch (error) {
