@@ -2,6 +2,8 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import CommentsView from '../../components/Comment';
+import CommentForm from '../../components/CommentForm';
+import { useState } from 'react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -92,11 +94,18 @@ export async function getStaticProps({params}) {
 }
 
 const PostPage = ({ post, relatedPosts, categories, tags, comments }) => {
+    const [parentId, setParentId] = useState(0);
   // console.log('postsssss', post._embedded);
   // console.log('relatedPosts', relatedPosts);
   const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
   // const relatedFeaturedImage = relatedPosts._embedded['wp:featuredmedia'] ? relatedPosts._embedded['wp:featuredmedia'][0].source_url : null;
   // console.log('comments', comments);
+
+  const addReply = (parentId) => {
+    // Set up your reply form logic here
+    console.log('Reply to comment ID:', parentId);
+    setParentId(parentId);
+  };
 
   return (
     <div className="container max-w-screen-md mx-auto my-10 inline-block">
@@ -142,7 +151,14 @@ const PostPage = ({ post, relatedPosts, categories, tags, comments }) => {
 		</ul>
 		{/* Comments */}
 		<div>
-			<CommentsView comments={comments} />
+			{/* Render Comment Form */}
+            <span className="comment-submit-status"></span>
+			<CommentsView comments={comments} addReply={addReply} />
+            <div id="comment-form-wrapper">
+                <h2 className='text-2xl my-5 font-medium'>Leave a Comment</h2>
+                <div><span className="reply-to-comment-message"></span></div>
+			    <CommentForm postId={post.id} parentId={parentId} />
+            </div>
 		</div>
 		{/* Related Posts */}
 		{ relatedPosts.length > 0 &&

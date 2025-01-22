@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Comment = ({ comment, comments }) => {
+const Comment = ({ comment, comments, addReply }) => {
 	// filter rootCommnets and find out children comments
 	const childComments = comments.filter(c => c.parent === comment.id);
 	// console.log( 'singleComment', comment );
@@ -11,12 +11,28 @@ const Comment = ({ comment, comments }) => {
 			<div data-comment-id={comment.id}>
 				<strong>{comment.author_name} - id {comment.id}</strong>: 
 				<div dangerouslySetInnerHTML={{__html: comment.content.rendered}} />
-				<a data-comment-reply-id={comment.id} href="#">Reply</a>
+				{/* <a data-comment-reply-id={comment.id} href="#">Reply</a> */}
+				<button
+					className="text-blue-500 text-sm mt-2"
+					onClick={() => {
+						const element = document.getElementById('comment-form-wrapper');
+						if (element) {
+						  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+						}
+						const replyMessageElement = document.querySelector('.reply-to-comment-message');
+						if (replyMessageElement) {
+							replyMessageElement.innerHTML = `Replying to comment: ${comment.content.rendered}`;
+						}
+						addReply(comment.id)
+					}}
+				>
+					Reply
+				</button>
 			</div>
 			{childComments.length > 0 && (
 				<div>
 				{childComments.map(childComment => (
-					<Comment key={childComment.id} comment={childComment} comments={comments} />
+					<Comment key={childComment.id} comment={childComment} comments={comments} addReply={addReply} />
 				))}
 				</div>
 			)}
@@ -24,7 +40,7 @@ const Comment = ({ comment, comments }) => {
 	);
 };
 
-const CommentsView = ({ comments }) => {
+const CommentsView = ({ comments, addReply }) => {
 	// Find out parent comments
 	const rootComments = comments.filter(comment => comment.parent === 0);
 	// console.log( 'rootComments', rootComments );
@@ -34,7 +50,7 @@ const CommentsView = ({ comments }) => {
 		<h2>Comments</h2>
 		{/* Loop through parent comment and show accordingly */}
 		{rootComments.map(comment => (
-			<Comment key={comment.id} comment={comment} comments={comments} />
+			<Comment key={comment.id} comment={comment} comments={comments} addReply={addReply} />
 		))}
 		</div>
 	);
