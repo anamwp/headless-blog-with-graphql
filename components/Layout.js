@@ -14,6 +14,7 @@ const Layout = ({ children }) => {
             <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/about">About</Link></li>
             <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/category">Category</Link></li>
             <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/tag">Tag</Link></li>
+            <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/login">Account</Link></li>
           </ul>
         </nav>
       </header>
