@@ -10,13 +10,24 @@ export default function LoginMenu() {
 			const cookies = document.cookie.split('; ');
 			const userCookie = cookies.find((cookie) => cookie.startsWith('user_data='));
 			if (userCookie) {
-				const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
-				setUserData(userData);
+				// const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
+				// setUserData(userData);
+				try {
+					const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
+					setUserData(userData);
+				} catch (error) {
+					console.error('Failed to parse user data from cookie:', error);
+				}
 			}
 		}
-		router.events.on('routeChangeStart', manageUserData);
+		manageUserData();
+
+		const handleRouteChange = () => {
+			manageUserData();
+		};
+		router.events.on('routeChangeStart', handleRouteChange);
 		return () => {
-			router.events.off('routeChangeStart', manageUserData);
+			router.events.off('routeChangeStart', handleRouteChange);
 		};
 
 	}, [router.events]);
