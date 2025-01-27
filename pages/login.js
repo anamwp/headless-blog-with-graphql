@@ -7,19 +7,20 @@ export default function LoginPage() {
 	const [ userData, setUserData ] = useState(null);
 	const useAutoLogin = () => {
 		useEffect(() => {
-			const token = document.cookie
-			.split('; ')
-			.find((row) => row.startsWith('token='))
-			?.split('=')[1];
+			// if only token is in cookie and no user data
+			// const token = document.cookie
+			// .split('; ')
+			// .find((row) => row.startsWith('token='))
+			// ?.split('=')[1];
 
 			const cookies = document.cookie.split('; ');
 			const userCookie = cookies.find((cookie) => cookie.startsWith('user_data='));
 
 			if (userCookie) {
 				const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
+				// console.log(userData.token); // Access the token
+				// console.log(userData.user_display_name); // Access the display name
 				setUserData(userData);
-				console.log(userData.token); // Access the token
-				console.log(userData.user_display_name); // Access the display name
 				const token = userData.token;
 				if (token) {
 					getCurrentUser(token).then((user) => {
@@ -35,18 +36,18 @@ export default function LoginPage() {
 		
 		}, []);
 	};
-	console.log('User:', user);
+	// console.log('User:', user);
 	const logout = () => {
 		document.cookie = 'user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 		window.location.reload();
 	};
 	return (
-		<div>
+		<div className='container max-w-screen-md mx-auto p-5'>
 			{/* Show login if no user */}
 			{
-				!user && (
-					<div>
-						<h1>Login</h1>
+				!userData && (
+					<div className='flex flex-col gap-3 p-10 bg-slate-100 rounded-md'>
+						<p className='text-xl font-bold text-slate-700'>Login</p>
 						<Login />
 					</div>
 				)
@@ -54,14 +55,16 @@ export default function LoginPage() {
 			{/* Show user details */}
 			{
 				user && (
-					<div>
-						<p className='text-xl font-bold text-slate-700'>Current User</p>
-						<p>User: {user.name}</p>
-						<p>Name: {user.name}</p>
-						<p>Name: {userData.user_email}</p>
-						<p>Description: {user.description}</p>
-						<p>URL: {user.url}</p>
-						<button onClick={logout} >Logout</button>
+					<div className='flex flex-col gap-3'>
+						<div className='p-5 bg-slate-100 rounded-md flex flex-col gap-1'>
+							<p className='text-xl font-bold text-slate-700 mb-3'>Current User</p>
+							<p><b>User:</b> {user.name}</p>
+							<p><b>Name:</b> {user.name}</p>
+							<p><b>Email:</b> {userData.user_email}</p>
+							<p><b>Description:</b> {user.description}</p>
+							<p><b>URL:</b> {user.url}</p>
+						</div>
+						<button onClick={logout} className='mt-5 px-5 py-2 border-2 border-black rounded-sm bg-black text-white hover:bg-slate-700 hover:border-black transition-all'>Logout</button>
 					</div>
 				)
 			}

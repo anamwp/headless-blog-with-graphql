@@ -37,17 +37,20 @@ const Login = () => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className='border-2 border-black rounded-sm px-3 py-2'
           required
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
+          className='border-2 border-black rounded-sm px-3 py-2'
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
-        {error && <p className="error">{error}</p>}
+        <button type="submit" className='mt-5 px-5 py-2 border-2 border-black rounded-sm bg-black text-white hover:bg-slate-700 hover:border-black transition-all'>Login</button>
+        {error && <div className="error text-red-800" dangerouslySetInnerHTML={{__html: error}} />}
+        
       </form>
     </div>
   );
