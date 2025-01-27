@@ -25,7 +25,7 @@ export default function LoginPage() {
 				if (token) {
 					getCurrentUser(token).then((user) => {
 						if (user) {
-							console.log('User is already logged in:', user);
+							// console.log('User is already logged in:', user);
 							setUser(user);
 						} else {
 							console.log('User is not logged in');

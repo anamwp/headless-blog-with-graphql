@@ -40,7 +40,7 @@ const Home = () => {
     setLoading(true);
     try {
       const response = await getPosts(page, process.env.NEXT_PUBLIC_POSTS_PER_PAGE);
-      console.log('response', response);
+      // console.log('response', response);
       const postData = response.data;
       const totalPosts = response.totalPosts;
 
@@ -68,7 +68,7 @@ const Home = () => {
   }, []);
   
   
-  console.log('sitePosts', sitePosts);
+  // console.log('sitePosts', sitePosts);
   // console.log('get static props', sitePosts);
   // sitePosts.map((post) => {
   //   console.log('post', post.title.rendered);

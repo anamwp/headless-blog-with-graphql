@@ -15,7 +15,7 @@ const Login = () => {
         username,
         password,
       });
-	  console.log( response );
+	  // console.log( response );
     //   const { token, user_display_name, user_email, user_nicename } = response.data;
 
       // Store the token in cookies or localStorage
