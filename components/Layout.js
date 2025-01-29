@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
             <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/tag">Tag</Link></li>
             <LoginMenu/>
           </ul>
-          <WPMenu menuSlug='35' />
+          <WPMenu menuSlug={`${process.env.NEXT_PUBLIC_PRIMARY_MENU_ID}`} />
         </nav>
       </header>
 
