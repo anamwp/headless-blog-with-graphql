@@ -43,6 +43,13 @@ export default function WPMenu( { menuSlug } ) {
   
 	  	fetchMenu();
 	}, [menuSlug]);
+
+	// Adjust submenu positioning dynamically to prevent overflow
+	// Function to check if menu item is last in the row
+	const isLastItem = (index, itemsLength) => {
+		return index >= itemsLength - 2; // Adjust threshold based on layout
+	};
+
   
 	if (loading) return <p>Loading menu...</p>;
 	if (error) return <p>{error}</p>;
@@ -50,28 +57,35 @@ export default function WPMenu( { menuSlug } ) {
 	// Render menu recursively to handle nested menus
 	const renderMenu = (items) => {
 		return (
-			<ul className="menu flex flex-row gap-2">
-				{items.map((item) => (
-					<li key={item.id} className="menu-item relative group">
-					<Link href={item.url}>
-						<span className="block px-4 py-2 hover:text-blue-500">{item.title}</span>
-					</Link>
-					{item.children.length > 0 && (
-						<ul className="submenu absolute top-full right-0 hidden w-64 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block" style={{ transformOrigin: 'top left' }}>
-							{item.children.map((child) => (
-								<li key={child.id} className="submenu-item">
-									<Link
-										href={child.url}
-										className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-									>
-										{child.title}
-									</Link>
-								</li>
-							))}
-						</ul>
-					)}
-					</li>
-				))}
+			<ul className="menu flex flex-row">
+				{items.map((item, index) => {
+					const isLast = isLastItem(index, items.length);
+					const submenuClass = isLast ? 'right-0 left-auto' : 'left-0 right-auto';
+
+					return(
+						<li key={item.id} className="menu-item relative group">
+							<Link href={item.url}>
+								<span className="block px-3 py-1 cursor-pointer text-slate-600 hover:text-slate-950">
+									{item.title}
+								</span>
+							</Link>
+
+							{item.children.length > 0 && (
+								<ul className={`submenu absolute top-full ${submenuClass} hidden min-w-[200px] w-64 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block`}>
+									{item.children.map((child) => (
+										<li key={child.id} className="submenu-item">
+											<Link href={child.url}>
+												<span className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+													{child.title}
+												</span>
+											</Link>
+										</li>
+									))}
+								</ul>
+							)}
+						</li>
+					)
+				})}
 			</ul>
 		);
 	};
@@ -80,7 +94,7 @@ export default function WPMenu( { menuSlug } ) {
 		<nav>
 			{renderMenu(menuItems)}
 	
-			<style jsx>{`
+			{/* <style jsx>{`
 			.menu {
 				list-style: none;
 				padding: 0;
@@ -102,7 +116,7 @@ export default function WPMenu( { menuSlug } ) {
 				padding-left: 10px;
 				border-left: 2px solid #ddd;
 			}
-			`}</style>
+			`}</style> */}
 		</nav>
 	);
 }

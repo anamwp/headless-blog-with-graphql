@@ -87,7 +87,7 @@ const Home = () => {
         ))}
       </ul> */}
       {hasMore && (
-        <div className='mt-10'>
+        <div className='mt-10 text-center'>
           <button className="px-5 py-2 border-2 border-slate-500 rounded-sm hover:bg-black hover:text-white hover:border-black transition-all" onClick={fetchPosts} disabled={loading}>
             {loading ? 'Loading...' : 'Show more posts'}
           </button>
