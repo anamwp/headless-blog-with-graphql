@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import LoginMenu from './LoginMenu';
+import WPMenu from './WPMenu';
 
 const Layout = ({ children }) => {
   return (
@@ -18,6 +19,7 @@ const Layout = ({ children }) => {
             {/* <li><Link className='text-slate-600 text-base hover:text-slate-950' href="/login">Account</Link></li> */}
             <LoginMenu/>
           </ul>
+          <WPMenu menuSlug='35' />
         </nav>
       </header>
 
