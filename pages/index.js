@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export async function getStaticProps() {
-  const posts = await getPosts(1, 10);
+  const posts = await getPosts(9, null);
   // console.warn('get static props', posts);
   return { props: { posts } };
 }
@@ -12,16 +12,16 @@ export async function getStaticProps() {
 const RenderData = ( posts ) => {
   // console.log('featured image', featuredImage);
   return posts.data.map((post) => {
-    const featuredImage = post._embedded['wp:featuredmedia'] ? post._embedded['wp:featuredmedia'][0].source_url : null;
+    const featuredImage = post.featuredImage ? post.featuredImage.node.sourceUrl : null;
     // console.log('featured image', featuredImage);
     return (
-      <li key={post.id} className='mb-2'>
+      <li key={post.postId} className='mb-2'>
       <Link className='text-slate-600 text-base hover:text-slate-950 overflow-hidden inline-block rounded-md' href={`/posts/${post.slug}`}>
         {
-          featuredImage && <Image width={900} height={600} src={featuredImage} alt={post.title.rendered} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
+          featuredImage && <Image priority={true} width={900} height={600} src={featuredImage} alt={post.title} className='w-auto h-auto object-cover rounded-md hover:scale-125 transition-all duration-300' />
         }
       </Link>
-      <Link className='text-lg mt-3 inline-block leading-tight text-slate-600 text-base hover:text-slate-950' href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
+      <Link className='text-lg mt-3 inline-block leading-tight text-slate-600 text-base hover:text-slate-950' href={`/posts/${post.slug}`}>{post.title}</Link>
     </li>
     )
   });
@@ -31,27 +31,35 @@ const RenderData = ( posts ) => {
 const Home = () => {
 
   const [sitePosts, setSitePosts] = useState([]); // Store fetched posts
-  const [page, setPage] = useState(1); // Current page
+  // const [page, setPage] = useState(1); // Current page
   const [loading, setLoading] = useState(false); // Loading state
   const [hasMore, setHasMore] = useState(true); // If more posts exist
+  const [endCursor, setEndCursor] = useState(null);
 
   const fetchPosts = async () => {
-    if (loading) return;
+    if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const response = await getPosts(page, process.env.NEXT_PUBLIC_POSTS_PER_PAGE);
-      // console.log('response', response);
+      const response = await getPosts(100, endCursor);  
+      console.log('response', response);
       const postData = response.data;
-      const totalPosts = response.totalPosts;
+      // const totalPosts = response.totalPosts;
 
       setSitePosts((prevPosts) => [...prevPosts, ...postData]);
-      setPage((prevPage) => prevPage + 1);
+      // setPage((prevPage) => prevPage + 1);
+      setEndCursor(response.pageInfo.endCursor);
+
       
       if( postData ){
-        if (postData.length < process.env.NEXT_PUBLIC_POSTS_PER_PAGE){
+        // if (postData.length < process.env.NEXT_PUBLIC_POSTS_PER_PAGE){
+        //   setHasMore(false);
+        // }else if( totalPosts == process.env.NEXT_PUBLIC_POSTS_PER_PAGE ){
+        //   setHasMore(false)
+        // }
+        if( response.pageInfo.hasNextPage === true ){
+          setHasMore(true);
+        }else{
           setHasMore(false);
-        }else if( totalPosts == process.env.NEXT_PUBLIC_POSTS_PER_PAGE ){
-          setHasMore(false)
         }
       }
 
@@ -71,7 +79,7 @@ const Home = () => {
   // console.log('sitePosts', sitePosts);
   // console.log('get static props', sitePosts);
   // sitePosts.map((post) => {
-  //   console.log('post', post.title.rendered);
+  //   console.log('post', post.title);
   // })
   return (
     <div>
@@ -82,7 +90,7 @@ const Home = () => {
       {/* <ul>
         {sitePosts.map((post) => (
           <li key={post.id}>
-            <Link href={`/posts/${post.slug}`}>{post.title.rendered}</Link>
+            <Link href={`/posts/${post.slug}`}>{post.title}</Link>
           </li>
         ))}
       </ul> */}
