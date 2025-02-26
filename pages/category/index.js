@@ -42,9 +42,9 @@ export default function Category() {
 					<ul>
 						{siteCategories.map((category) => (
 							
-							<li key={category.id}>
-								<Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/category/${category.slug}`}>
-									{category.name}
+							<li key={category.node.termTaxonomyId}>
+								<Link className="capitalize text-slate-600 text-base hover:text-slate-950" href={`/category/${category.node.slug}`}>
+									{category.node.name}
 								</Link>
 							</li>
 						))}

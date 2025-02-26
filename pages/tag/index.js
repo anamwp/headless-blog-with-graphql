@@ -42,9 +42,9 @@ export default function Tag() {
 				loading ? 'Loading tags...' : (
 					siteTags && <ul>
 						{siteTags.map((tag) => (
-							<li className='mb-1' key={tag.id}>
-								<Link className='capitalize text-slate-600 text-base hover:text-slate-950' href={`/tag/${tag.slug}`}>
-									{tag.name}
+							<li className='mb-1' key={tag.node.termTaxonomyId}>
+								<Link className='capitalize text-slate-600 text-base hover:text-slate-950' href={`/tag/${tag.node.slug}`}>
+									{tag.node.name}
 								</Link>
 							</li>
 						))}
