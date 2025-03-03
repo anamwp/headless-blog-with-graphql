@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 
 
 const Comment = ({ comment, comments, addReply }) => {
+	// console.log('Comments', comments);
+	// console.log(comment.content, ' has ', comment.replies.nodes.length + ' childs');
 	/**
 	 * This useEffect will remove the reply message and comment submit status message when user navigates to another page.
 	 */
@@ -20,7 +22,6 @@ const Comment = ({ comment, comments, addReply }) => {
 				commentSubmitStatusDom.innerHTML = '';
 			}
 		};
-		// alert('Comment.js');
 	
 		router.events.on('routeChangeStart', handleRouteChange);
 	
@@ -31,15 +32,19 @@ const Comment = ({ comment, comments, addReply }) => {
 	}, [router.events]);
 	
 
-	// filter rootCommnets and find out children comments
-	const childComments = comments.filter(c => c.parent === comment.id);
+	// filter rootCommnets/parentComments and find out children comments
+	// const childComments = comments.filter(c => c.id === comment.id);
+	// const childComments = comments.filter(c => c.commentId === comment.commentId);
+	// console.log('childComments', childComments);
 
 	return (
-		<div className={`rounded ${comment.parent ? 'bg-white p-2 px-3 mb-2' : 'bg-gray-100 p-5 mb-5'}`} style={{ marginLeft: comment.parent ? '20px' : '0px', border: '1px solid #ddd' }}>
+		<div className={`rounded ${comment.parentId ? 'bg-white p-2 px-3 mb-2' : 'bg-gray-100 p-5 mb-5'}`} style={{ marginLeft: comment.parentId ? '20px' : '0px', border: '1px solid #ddd' }}>
 			<div data-comment-id={comment.id} className='flex justify-between items-start'>
 				<div className="comment-content flex flex-col items-start">
-					<strong className="capitalize">{comment.author_name}</strong>
-					<div dangerouslySetInnerHTML={{__html: comment.content.rendered}} />
+					<div className="parentID">{ comment.commentId }</div>
+					<strong className="capitalize">{comment.author.node.name}</strong>
+					<small className="comment-date">{ comment.date }</small>
+					<div dangerouslySetInnerHTML={{__html: comment.content}} />
 				</div>
 				<button
 					className="text-black text-sm mt-2 font-medium hover:text-slate-500"
@@ -59,15 +64,22 @@ const Comment = ({ comment, comments, addReply }) => {
 							replyMessageElement.innerHTML = `<strong>Replying to comment:</strong> ${comment.content.rendered}`;
 						}
 
-						addReply(comment.id)
+						addReply(comment.commentId)
 					}}
 				>
 					Reply
 				</button>
 			</div>
-			{childComments.length > 0 && (
+			{/* {childComments.length > 0 && (
 				<div className='ml-5 mt-3'>
 					{childComments.map(childComment => (
+						<Comment key={childComment.id} comment={childComment} comments={comments} addReply={addReply} />
+					))}
+				</div>
+			)} */}
+			{comment.replies.nodes.length > 0 && (
+				<div className='ml-5 mt-3'>
+					{comment.replies.nodes.map(childComment => (
 						<Comment key={childComment.id} comment={childComment} comments={comments} addReply={addReply} />
 					))}
 				</div>
@@ -77,8 +89,11 @@ const Comment = ({ comment, comments, addReply }) => {
 };
 
 const CommentsView = ({ comments, addReply }) => {
+	// console.log('CommentsView.js', comments);
 	// Find out parent comments
-	const rootComments = comments.filter(comment => comment.parent === 0);
+	const rootComments = comments.filter(comment => comment.parentId === null);
+	// console.log(rootComments);
+	// const rootComments = comments;
 
 	return (
 		<div>
