@@ -31,6 +31,10 @@ export default function WPMenu( { menuSlug } ) {
 	useEffect(() => {
 		const fetchMenu = async () => {
 			try {
+				/**
+				 * Custom End point 
+				 * Developed through a theme - sage
+				 */
 				const response = await axios.get(`${process.env.NEXT_PUBLIC_API_SITE_URL}/wp-json/smart-menu-api/v1/menus/${menuSlug}`);
 				const organizedMenu = buildMenuHierarchy(response.data || []);
 				setMenuItems(organizedMenu);
@@ -93,30 +97,6 @@ export default function WPMenu( { menuSlug } ) {
 	return (
 		<nav>
 			{renderMenu(menuItems)}
-	
-			{/* <style jsx>{`
-			.menu {
-				list-style: none;
-				padding: 0;
-				margin: 0;
-			}
-			.menu-item {
-				margin: 5px 0;
-			}
-			.menu-item > a {
-				font-weight: bold;
-				text-decoration: none;
-				color: #0070f3;
-			}
-			.menu-item > a:hover {
-				text-decoration: underline;
-			}
-			.submenu {
-				margin-left: 20px;
-				padding-left: 10px;
-				border-left: 2px solid #ddd;
-			}
-			`}</style> */}
 		</nav>
 	);
 }
