@@ -61,7 +61,7 @@ const Comment = ({ comment, comments, addReply }) => {
 						}
 						if (replyMessageElement) {
 							replyMessageElement.classList.add('bg-slate-200', 'flex', 'gap-3', 'p-5', 'inline-block', 'w-full', 'rounded');
-							replyMessageElement.innerHTML = `<strong>Replying to comment:</strong> ${comment.content.rendered}`;
+							replyMessageElement.innerHTML = `<strong>Replying to comment:</strong> ${comment.content}`;
 						}
 
 						addReply(comment.commentId)

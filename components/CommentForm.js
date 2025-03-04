@@ -1,37 +1,92 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import UserData from './UserData';
+import { GraphQLClient, gql } from "graphql-request";
+const API_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL; // Your WPGraphQL endpoint
+
+const CREATE_COMMENT_MUTATION = gql`
+	mutation CreateComment(
+		$postId: Int!
+		$parentId: ID
+		$authorName: String!
+		$authorEmail: String!
+		$content: String!
+	) {
+		createComment(
+			input: {
+				commentOn: $postId
+				parent: $parentId
+				author: $authorName
+				authorEmail: $authorEmail
+				content: $content
+			}
+		) {
+			success
+			comment {
+				id
+				content
+				date
+				approved
+				author {
+					node {
+						name
+					}
+				}
+				parent {
+					node {
+						id
+					}
+				}
+			}
+		}
+	}
+`;
 
 const CommentForm = ({ postId, parentId = 0 }) => {
 	const [authorName, setAuthorName] = useState('');
 	const [authorEmail, setAuthorEmail] = useState('');
 	const [content, setContent] = useState('');
+	/**
+	 * Get user data
+	 */
 	const userData = UserData();
-	
+	/**
+	 * Initialize GraphQL client
+	 */
+	const client = new GraphQLClient(API_URL);
+	/**
+	 * Handle Comment form submission
+	 * @param {*} e - Event
+	 */
 	const handleSubmit = async (e) => {
 		let name = authorName;
     	let email = authorEmail;
-
+		/**
+		 * Get the logged in user data
+		 */
 		if( userData && userData.token ){
 			name = userData.user_nicename;
 			email = userData.user_email;
 		}
-
+		/**
+		 * Prevent default form submission
+		 */
 		e.preventDefault();
+		/**
+		 * Submit the comment
+		 * @see https://www.wpgraphql.com/docs/comments#create-comment
+		 */
 		try {
-			// console.log( 'CommentForm.handleSubmit', userData );
-			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/comments`, {
-				post: postId,	
-				parent: parentId,
-				// author_name: authorName,
-				// author_email: authorEmail,
-				author_name: name,
-				author_email: email,
+			const response = await client.request(CREATE_COMMENT_MUTATION, {
+				postId: parseInt(postId, 10),
+      			parentId: parentId ? parseInt(parentId, 10) : null,
+				authorName: name,
+				authorEmail: email,
 				content,
 			});
-			console.log('Comment submitted response:', response);
-			console.log('Comment submitted:', response.data);
-			if( response.status === 201 ){
+			/**
+			 * If comment is successfully submitted
+			 */
+			if( response.createComment.success === true ){
 				if( !userData || !userData.token ){
 					setAuthorName('');
 					setAuthorEmail('');

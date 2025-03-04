@@ -161,15 +161,10 @@ const GET_POST_BY_SLUG = gql`
 `;
 
 export async function getStaticPaths() {
-    
     /**
      * Fetch all posts to generate static pages
      */
-    // const response = await axios.get(`${API_URL}/posts`, {
-    //     params: { per_page: 10 }, // Adjust as needed for large sites
-    // });
     const data = await graphQLClient.request(GET_ALL_POST_SLUG);
-
     /**
      * Generate paths for each post
      */
@@ -186,13 +181,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({params}) {
-
-    console.log('static params', params);
-    // console.log('static context', context);
     const { slug } = params;
-    // console.log('params of static props', id);
-    // console.log('ID of single post', id);
-
     const siteSettings = {
         siteTitle: 'My Awesome Blog',
         siteDescription: 'A blog about awesome things.',
@@ -203,66 +192,30 @@ export async function getStaticProps({params}) {
         return { notFound: true };
     }
 
-    // const response = await axios.get(`${API_URL}/posts`, {
-    //     params: { slug: slug, _embed: true},
-    // });
-
-    // if (response.data.length === 0) {
-    //     return { notFound: true }; // 404 if the post doesn't exist
-    // }
-    // const post = response.data[0];
-    // const id = post.id;
-
-    // const categoriesResponse = await axios.get(`${API_URL}/categories`);
+    
     // const relatedPostsResponse = await axios.get(`${API_URL}/posts`, {
     //     params: { categories: post.categories[0], exclude: post.id, per_page: 3, _embed: true },
     // });
     // const relatedPosts = relatedPostsResponse.data ? relatedPostsResponse.data : [];
     const relatedPosts = [];
 
-    // Fetch categories and tags details
-    // const categoriesResponse = await axios.get(`${API_URL}/categories`, {
-    //     params: { include: post.categories.join(',') }, // Include only the post's categories
-    // });
-    // console.log( 'categoriesResponse', categoriesResponse.data );
-
-    // const tagsResponse = await axios.get(`${API_URL}/tags`, {
-    //     params: { include: post.tags.join(',') }, // Include only the post's tags
-    // });
-    // console.log( 'tagsResponse', tagsResponse.data );
-    // console.log('relatedPostsResponse', relatedPostsResponse.data);
-
-    // console.log('post', post);
-
-    // Fetch comments for the post
-    // const commentsResponse = await axios.get(`${API_URL}/comments`, {
-    //     params: { post: id }, // Fetch comments by post ID
-    // });
-    // const comments = commentsResponse.data;
-    // console.log('comments', comments);
-
     return {
         props: {
             post: data.postBy,
             relatedPosts: relatedPosts,
             siteSettings: siteSettings,
-            // categories: categoriesResponse.data,
-            // tags: tagsResponse.data,
-            // comments: comments,
         },
         revalidate: 10, // Revalidate every 10 seconds
     };
 }
 
-const PostPage = ({ post, relatedPosts, categories, tags, comments }) => {
+const PostPage = ({ post, relatedPosts }) => {
     const [parentId, setParentId] = useState(0);
-    // console.log('postsssss', post);
-    // console.log('comment node', post.comments.nodes);
-    // console.log('relatedPosts', relatedPosts);
     const featuredImage = post.featuredImage ? post.featuredImage.node.sourceUrl : null;
-    // const relatedFeaturedImage = relatedPosts._embedded['wp:featuredmedia'] ? relatedPosts._embedded['wp:featuredmedia'][0].source_url : null;
-    // console.log('comments', comments);
-
+    /**
+     * Add reply to comment
+     * @param {Int} parentId - Parent comment ID
+     */
     const addReply = (parentId) => {
         // Set up your reply form logic here
         console.log('Reply to comment ID:', parentId);
@@ -321,7 +274,7 @@ const PostPage = ({ post, relatedPosts, categories, tags, comments }) => {
                         <span className="comment-submit-status"></span>
                         <span className="reply-to-comment-message"></span>
                     </div>
-                    <CommentForm postId={post.id} parentId={parentId} />
+                    <CommentForm postId={post.postId} parentId={parentId} />
                 </div>
             </div>
             {/* Related Posts */}
