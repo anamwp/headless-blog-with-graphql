@@ -7,9 +7,9 @@ export const getCurrentUser = async (token) => {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		return response.data; // Return user data
+		return response.data;
   	} catch (error) {
     	console.error('Failed to fetch current user:', error);
-    	return null; // User is not logged in
+    	return null;
   	}
 };

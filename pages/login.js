@@ -7,25 +7,22 @@ export default function LoginPage() {
 	const [ userData, setUserData ] = useState(null);
 	const useAutoLogin = () => {
 		useEffect(() => {
-			// if only token is in cookie and no user data
-			// const token = document.cookie
-			// .split('; ')
-			// .find((row) => row.startsWith('token='))
-			// ?.split('=')[1];
-
+			/**
+			 * Get the user_data cookie
+			 * If the cookie exists, set the user data in state
+			 * Check if the token exists
+			 * If the token exists, get the current user data
+			 * Set the user data in state
+			 */
 			const cookies = document.cookie.split('; ');
 			const userCookie = cookies.find((cookie) => cookie.startsWith('user_data='));
-			console.log('userCookie:', userCookie);
 			if (userCookie) {
 				const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
-				// console.log(userData.token); // Access the token
-				// console.log(userData.user_display_name); // Access the display name
 				setUserData(userData);
 				const token = userData.token;
 				if (token) {
 					getCurrentUser(token).then((user) => {
 						if (user) {
-							// console.log('User is already logged in:', user);
 							setUser(user);
 						} else {
 							console.log('User is not logged in');

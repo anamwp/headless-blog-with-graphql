@@ -11,6 +11,14 @@ const Login = () => {
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		try {
+			/**
+			 * Sent form request to JWT token endpoint
+			 * Response will contain
+			 * - token
+			 * - user_display_name
+			 * - user_email
+			 * - user_nicename
+			 */
 			const response = await axios.post(`${process.env.NEXT_PUBLIC_API_FOR_JWT_TOKEN}`, {
 				username,
 				password,
