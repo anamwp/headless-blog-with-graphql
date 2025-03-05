@@ -5,7 +5,7 @@ import CommentForm from '../../components/CommentForm';
 import { useState } from 'react';
 import { GraphQLClient, gql } from 'graphql-request';
 
-const API_URL = 'https://anamstarter.local/graphql';
+const API_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL;
 const graphQLClient = new GraphQLClient(API_URL);
 
 const GET_ALL_POST_SLUG = gql`
