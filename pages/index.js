@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export async function getStaticProps() {
-  const posts = await getPosts(9, null);
-  return { props: { posts } };
+	const posts = await getPosts(9, null);
+	return { props: { posts } };
 }
 
 const RenderData = ( posts ) => {
@@ -46,9 +46,9 @@ const Home = () => {
 				 * else set it to false
 				 */
 				if( response.pageInfo.hasNextPage === true ){
-				setHasMore(true);
+					setHasMore(true);
 				}else{
-				setHasMore(false);
+					setHasMore(false);
 				}
 			}
 		} catch (error) {

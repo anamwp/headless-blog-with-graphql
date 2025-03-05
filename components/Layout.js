@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
 		<header className='site-header py-5 border-b mb-10'>
 			<nav className='container menu-container max-w-screen-xl mx-auto flex flex-wrap justify-between items-center sm:px-5 px-5'>
 			<h1 className='text-3xl font-bold text-slate-700'>
-				<Link href="/">Headless Blog</Link>
+				<Link href="/">GraphPress</Link>
 			</h1>
 			<ul style={styles.navList}>
 				<li><Link className='text-slate-600 text-base hover:text-slate-950' href="/">Home</Link></li>
@@ -30,7 +30,8 @@ const Layout = ({ children }) => {
 
 		<footer className='site-footer border-t py-5 mt-10'>
 			<div className="container mx-auto">
-			<p className="text-center">&copy; {new Date().getFullYear()} My WordPress Blog</p>
+			<p className='text-center mb-1 font-semibold'>Headless WordPress Blog with GraphQL</p>
+			<p className="text-center">&copy; {new Date().getFullYear()} </p>
 			</div>
 		</footer>
 		</>
