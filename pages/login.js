@@ -15,7 +15,7 @@ export default function LoginPage() {
 
 			const cookies = document.cookie.split('; ');
 			const userCookie = cookies.find((cookie) => cookie.startsWith('user_data='));
-
+			console.log('userCookie:', userCookie);
 			if (userCookie) {
 				const userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
 				// console.log(userData.token); // Access the token
@@ -36,7 +36,7 @@ export default function LoginPage() {
 		
 		}, []);
 	};
-	// console.log('User:', user);
+
 	const logout = () => {
 		document.cookie = 'user_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 		window.location.reload();
