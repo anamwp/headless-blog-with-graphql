@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Headless Blog with GraphQL
 
-## Getting Started
+A modern headless blog powered by GraphQL and WordPress. This project enables seamless data fetching via GraphQL for a flexible and scalable headless CMS experience.
 
-First, run the development server:
+## 🚀 Features
+- Fetch WordPress blog posts using GraphQL.
+- Headless CMS setup for decoupled front-end development.
+- Efficient and optimized API queries with WPGraphQL.
+- Fully customizable and extendable structure.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🛠️ Installation
+
+##### 1️⃣ Prerequisites
+
+Before getting started, ensure you have the following installed:
+- WordPress (latest version)
+- [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) Plugin for GraphQL API support
+- [JWT Authentication for WP REST API](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/) Plugin for login functionality
+- Node.js(LTS) and npm/yarn (for front-end setup)
+
+##### 2️⃣ Setup WordPress Backend
+1.	Install WordPress and activate the WPGraphQL plugin.
+2.  Activate JWT Authentication for WP REST API plugin and configure it based on plugin documentation.
+3.	Configure WordPress permalinks to Post Name for proper API responses.
+4.	Verify the GraphQL API is accessible at:
+
+`https://your-wordpress-site.com/graphql`
+
+
+##### 3️⃣ Clone the Repository
+
+git clone https://github.com/anamwp/headless-blog-with-graphql.git
+cd headless-blog-with-graphql
+
+##### 4️⃣ Install Dependencies
+
+`npm install` or `yarn install`
+
+##### 5️⃣ Configure API Endpoint
+
+Update the GraphQL API URL in your .env file:
+
+NEXT_PUBLIC_GRAPHQL_API=https://your-wordpress-site.com/graphql
+```
+SITE_DOMAIN=yoursite.com
+WP_SITE_URL=http://yoursite.com
+NEXT_PUBLIC_API_SITE_URL=http://yoursite.com
+NEXT_PUBLIC_API_URL=http://yoursite.com/wp-json/wp/v2
+NEXT_PUBLIC_API_URL_JWT=http://yoursite.com/wp-json
+NEXT_PUBLIC_API_FOR_JWT_TOKEN=http://yoursite.com/wp-json/jwt-auth/v1/token
+NEXT_PUBLIC_GRAPHQL_URL=http://yoursite.com/graphql
+NEXT_PUBLIC_POSTS_PER_PAGE=9
+NEXT_PUBLIC_PRIMARY_MENU_ID=35
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6️⃣ Run the Development Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`npm run dev`  or  `yarn dev`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application will be available at http://localhost:3000.
 
-## Learn More
+### 📌 Usage
+Fetch all posts using GraphQL query:
 
-To learn more about Next.js, take a look at the following resources:
+```graphql
+query GetAllPosts {
+  posts {
+    nodes {
+      id
+      title
+      excerpt
+      slug
+    }
+  }
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Fetch a single post by slug:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```graphql
+query GetPostBySlug($slug: String!) {
+  postBy(slug: $slug) {
+    title
+    content
+    date
+    author {
+      node {
+        name
+      }
+    }
+  }
+}
+```
 
-## Deploy on Vercel
+## ⚡ Technologies Used
+- WordPress (as Headless CMS)
+- WPGraphQL (GraphQL API for WordPress)
+- Next.js / React (Front-end framework)
+- Apollo Client (GraphQL client for data fetching)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📌 Roadmap
+- Implement category-based filtering
+- Add pagination for posts
+- Improve caching with Apollo Client
+- Support for additional custom post types
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 💡 Contributing
+
+We welcome contributions! To contribute:
+	1.	Fork the repository.
+	2.	Create a new branch: git checkout -b feature-branch
+	3.	Commit your changes: git commit -m "Add new feature"
+	4.	Push to the branch: git push origin feature-branch
+	5.	Open a Pull Request.
+
+## 📜 License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## 📞 Support
+
+For any issues, feel free to open an issue on the GitHub repository.
