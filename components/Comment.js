@@ -87,7 +87,6 @@ const Comment = ({ comment, comments, addReply }) => {
 };
 
 const CommentsView = ({ comments, addReply }) => {
-	// console.log('CommentsView.js', comments);
 	// Find out parent comments
 	const rootComments = comments.filter(comment => comment.parentId === null);
 	// console.log(rootComments);
