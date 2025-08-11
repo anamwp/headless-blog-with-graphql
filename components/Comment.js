@@ -34,7 +34,6 @@ const Comment = ({ comment, comments, addReply }) => {
 	// filter rootCommnets/parentComments and find out children comments
 	// const childComments = comments.filter(c => c.id === comment.id);
 	// const childComments = comments.filter(c => c.commentId === comment.commentId);
-	// console.log('childComments', childComments);
 
 	return (
 		<div className={`rounded ${comment.parentId ? 'bg-white p-2 px-3 mb-2' : 'bg-gray-100 p-5 mb-5'}`} style={{ marginLeft: comment.parentId ? '20px' : '0px', border: '1px solid #ddd' }}>
