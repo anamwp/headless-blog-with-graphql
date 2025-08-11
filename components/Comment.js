@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 
 
 const Comment = ({ comment, comments, addReply }) => {
-	// console.log('Comments', comments);
 	// console.log(comment.content, ' has ', comment.replies.nodes.length + ' childs');
 	/**
 	 * This useEffect will remove the reply message and comment submit status message when user navigates to another page.
